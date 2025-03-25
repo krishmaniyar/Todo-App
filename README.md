@@ -49,7 +49,7 @@ A simple and intuitive **Todo App** built using **Flutter**, featuring **Firebas
 ### Pending Screen
 ![Pending Screen](screenshots/pending.png)
 
-### AssTask Screen
+### AddTask Screen
 ![AddTask Screen](screenshots/addTask.png)
 
 ### EditTask Screen
