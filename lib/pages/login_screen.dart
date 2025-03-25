@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       user = await _auth.signInWithEmailAndPassword(email, password);
     }
     else {
-      user = await _auth.registerWithEmailAndPassword(email, password);
+      user = await _auth.registerWithEmailAndPassword(email, password, username);
     }
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
@@ -90,6 +90,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             SizedBox(height: 20,),
+                            if (!isLogin)
+                              TextField(
+                                onChanged: (val) => username = val,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  labelText: 'Username',
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                                ),
+                              ),
                             SizedBox(height: 10),
                             TextField(
                               onChanged: (val) => email = val,

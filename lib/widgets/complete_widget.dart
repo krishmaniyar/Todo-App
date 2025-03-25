@@ -48,38 +48,54 @@ class _CompleteWidgetState extends State<CompleteWidget> {
                     ),
                     child: Slidable(
                       key: ValueKey(todo.id),
-                      endActionPane: ActionPane(
-                          motion: DrawerMotion(),
-                          children: [
-                            SlidableAction(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: "Delete",
-                                onPressed: (context) async{
-                                  await _databaseService.deleteTodoTask(todo.id);
-                                }
-                            )
-                          ]
+                      startActionPane: ActionPane(
+                        motion: DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: Colors.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: "Delete",
+                            onPressed: (context) async{
+                              await _databaseService.deleteTodoTask(todo.id);
+                            }
+                          )
+                        ]
                       ),
-                      child: ListTile(
-                        title: Text(
-                          todo.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            decoration: TextDecoration.lineThrough,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                todo.title,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'PlayWrite',
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                              SizedBox(height: 3), // Adjust the height as needed
+                              Text(
+                                todo.description,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'PlayWrite',
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        subtitle: Text(
-                          todo.description,
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                        trailing: Text(
-                          "${dt.day}/${dt.month}/${dt.year}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+                          trailing: Text(
+                            "${dt.day}/${dt.month}/${dt.year}",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w900,
+                              fontFamily: 'PlayWrite',
+                            ),
                           ),
                         ),
                       ),

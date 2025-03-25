@@ -6,6 +6,8 @@ import 'todo_model.dart';
 class DatabaseService {
   final CollectionReference todoCollection = FirebaseFirestore.instance.collection('todos');
   User? user = FirebaseAuth.instance.currentUser;
+  final CollectionReference userInfo = FirebaseFirestore.instance.collection('user');
+
 
   Future<DocumentReference> addTodoItem(String title, String description) async{
     return await todoCollection.add({
@@ -41,6 +43,19 @@ class DatabaseService {
 
   Stream<List<Todo>> get completedTodos {
     return todoCollection.where('uid', isEqualTo: user!.uid).where('completed', isEqualTo: true).snapshots().map(_todoListFromSnapshot);
+  }
+
+  Stream get info {
+    return userInfo
+        .where('uid', isEqualTo: user!.uid)
+        .snapshots()
+        .map((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        return snapshot.docs.first['username'];
+      } else {
+        return '';
+      }
+    });
   }
 
   List<Todo> _todoListFromSnapshot(QuerySnapshot snapshot) {

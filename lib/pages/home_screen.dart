@@ -23,106 +23,143 @@ class _HomeScreenState extends State<HomeScreen> {
     CompleteWidget(),
   ];
 
+  final DatabaseService _databaseService = DatabaseService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
-      appBar: AppBar(
-        foregroundColor: Colors.black,
-        backgroundColor: Colors.green,
-        title: Text(
-          'ToDo',
-        ),
-        actions: [
-          IconButton(
-            onPressed: ()async {
-              await AuthService().signOut();
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-            },
-            icon: Icon(Icons.exit_to_app)
-          )
-        ],
-      ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.green, Colors.blue],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      backgroundColor: Colors.blue[800],
+      body: SafeArea(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.indigo, Colors.blue,Colors.greenAccent],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      setState(() {
-                        _buttonIndex = 0;
-                      });
-                    },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width/2.2,
-                      decoration: BoxDecoration(
-                        color: _buttonIndex == 0 ? Colors.indigo : Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "Pending",
-                          style: TextStyle(
-                            fontSize: _buttonIndex == 0 ? 16 : 14,
-                            fontWeight: FontWeight.w500,
-                            color: _buttonIndex == 0 ? Colors.white : Colors.black38,
-                          ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Hi,',
+                        style: TextStyle(
+                          fontSize: 33.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'PlayFair',
                         ),
                       ),
-                    ),
+                      IconButton(
+                        onPressed: ()async {
+                          await AuthService().signOut();
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                        },
+                        icon: Icon(
+                          Icons.exit_to_app,
+                          color: Colors.black,
+                          size: 33,
+                        )
+                      ),
+                    ],
                   ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: () {
-                      setState(() {
-                        _buttonIndex = 1;
-                      });
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: StreamBuilder(
+                    stream: _databaseService.info,
+                    builder: (context, snapshot) {
+                      return Text(
+                        '${snapshot.data}',
+                        style: TextStyle(
+                          fontSize: 50,
+                          letterSpacing: 4,
+                          color: Colors.grey[900],
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'PlayFair',
+                        ),
+                      );
                     },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width/2.2,
-                      decoration: BoxDecoration(
-                        color: _buttonIndex == 1 ? Colors.indigo : Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "complete",
-                          style: TextStyle(
-                            fontSize: _buttonIndex == 1 ? 16 : 14,
-                            fontWeight: FontWeight.w500,
-                            color: _buttonIndex == 1 ? Colors.white : Colors.black38,
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        setState(() {
+                          _buttonIndex = 0;
+                        });
+                      },
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width/2.2,
+                        decoration: BoxDecoration(
+                          color: _buttonIndex == 0 ? Colors.green : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Pending",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'PlayFair',
+                              color: _buttonIndex == 0 ? Colors.black : Colors.black54,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
-              SizedBox(height: 30,),
-              _widgets[_buttonIndex],
-            ],
+                    InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () {
+                        setState(() {
+                          _buttonIndex = 1;
+                        });
+                      },
+                      child: Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width/2.2,
+                        decoration: BoxDecoration(
+                          color: _buttonIndex == 1 ? Colors.green : Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Complete",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'PlayFair',
+                              color: _buttonIndex == 1 ? Colors.black : Colors.black54,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 30,),
+                _widgets[_buttonIndex],
+              ],
+            ),
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.add
+          Icons.add,
+          size: 28,
         ),
         onPressed: () {
           _showTaskDialog(context);
@@ -144,7 +181,8 @@ void _showTaskDialog(BuildContext context, {Todo? todo}) {
       title: Text(
         todo == null ? "Add Task" : "Edit Task",
         style: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
+          fontFamily: 'PlayFair',
         ),
       ),
       content: SingleChildScrollView(
@@ -154,6 +192,10 @@ void _showTaskDialog(BuildContext context, {Todo? todo}) {
             children: [
               TextField(
                 controller: _titleControlller,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'PlayWrite',
+                ),
                 decoration: InputDecoration(
                   labelText: 'Title',
                   border: OutlineInputBorder(),
@@ -162,6 +204,10 @@ void _showTaskDialog(BuildContext context, {Todo? todo}) {
               SizedBox(height: 10,),
               TextField(
                 controller: _descriptionControlller,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'PlayWrite',
+                ),
                 decoration: InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(),
@@ -177,7 +223,12 @@ void _showTaskDialog(BuildContext context, {Todo? todo}) {
               Navigator.pop(context);
             },
             child: Text(
-                "Cancel"
+              "Cancel",
+              style: TextStyle(
+                fontWeight: FontWeight.w900,
+                fontSize: 18,
+                fontFamily: 'PlayFair',
+              ),
             )
         ),
         ElevatedButton(
@@ -196,6 +247,11 @@ void _showTaskDialog(BuildContext context, {Todo? todo}) {
             },
             child: Text(
               todo == null ? "Add" : "Update",
+              style: TextStyle(
+              fontWeight: FontWeight.w900,
+              fontSize: 18,
+              fontFamily: 'PlayFair',
+              ),
             )
         )
       ],
