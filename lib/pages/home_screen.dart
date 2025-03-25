@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/model/authentication.dart';
 import 'package:todo_app/pages/login_screen.dart';
 import 'package:todo_app/services/database_service.dart';
+import 'package:todo_app/widgets/complete_widget.dart';
+import 'package:todo_app/widgets/pending_widget.dart';
 
 import '../model/todo_model.dart';
 
@@ -17,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _buttonIndex = 0;
 
   final _widgets = [
-    Container(),
-    Container(),
+    PendingWidget(),
+    CompleteWidget(),
   ];
 
   @override
@@ -119,54 +121,60 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showTaskDialog(BuildContext context, {Todo? todo}) {
-    final TextEditingController _titleControlller = TextEditingController(text: todo?.title);
-    final TextEditingController _descriptionControlller = TextEditingController(text: todo?.description);
-    final DatabaseService _databaseService = DatabaseService();
+}
 
-    showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        title: Text(
-          todo == null ? "Add Task" : "Edit Task",
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
+void _showTaskDialog(BuildContext context, {Todo? todo}) {
+  final TextEditingController _titleControlller = TextEditingController(text: todo?.title);
+  final TextEditingController _descriptionControlller = TextEditingController(text: todo?.description);
+  final DatabaseService _databaseService = DatabaseService();
+
+  showDialog(context: context, builder: (context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: Text(
+        todo == null ? "Add Task" : "Edit Task",
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      content: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              TextField(
+                controller: _titleControlller,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 10,),
+              TextField(
+                controller: _descriptionControlller,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
           ),
         ),
-        content: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                TextField(
-                  controller: _titleControlller,
-                  decoration: InputDecoration(
-                    labelText: 'Title',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                TextField(
-                  controller: _descriptionControlller,
-                  decoration: InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        actions: [
-          TextButton(
+      ),
+      actions: [
+        TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text(
-              "Cancel"
+                "Cancel"
             )
-          ),
-          ElevatedButton(
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.indigo,
+              foregroundColor: Colors.white,
+            ),
             onPressed: () async{
               if(todo == null) {
                 await _databaseService.addTodoItem(_titleControlller.text, _descriptionControlller.text);
@@ -179,10 +187,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               todo == null ? "Add" : "Update",
             )
-          )
-        ],
-      );
-    });
-  }
-
+        )
+      ],
+    );
+  });
 }
