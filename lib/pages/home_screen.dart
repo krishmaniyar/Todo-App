@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/model/authentication.dart';
 import 'package:todo_app/pages/login_screen.dart';
-import 'package:todo_app/services/database_service.dart';
+import 'package:todo_app/model/database_service.dart';
 import 'package:todo_app/widgets/complete_widget.dart';
 import 'package:todo_app/widgets/pending_widget.dart';
 
@@ -26,10 +26,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF1d2630),
+      backgroundColor: Colors.green,
       appBar: AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: Color(0xFF1d2630),
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.green,
         title: Text(
           'ToDo',
         ),
@@ -43,71 +43,81 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    setState(() {
-                      _buttonIndex = 0;
-                    });
-                  },
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width/2.2,
-                    decoration: BoxDecoration(
-                      color: _buttonIndex == 0 ? Colors.indigo : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Pending",
-                        style: TextStyle(
-                          fontSize: _buttonIndex == 0 ? 16 : 14,
-                          fontWeight: FontWeight.w500,
-                          color: _buttonIndex == 0 ? Colors.white : Colors.black38,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green, Colors.blue],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      setState(() {
+                        _buttonIndex = 0;
+                      });
+                    },
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width/2.2,
+                      decoration: BoxDecoration(
+                        color: _buttonIndex == 0 ? Colors.indigo : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Pending",
+                          style: TextStyle(
+                            fontSize: _buttonIndex == 0 ? 16 : 14,
+                            fontWeight: FontWeight.w500,
+                            color: _buttonIndex == 0 ? Colors.white : Colors.black38,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    setState(() {
-                      _buttonIndex = 1;
-                    });
-                  },
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width/2.2,
-                    decoration: BoxDecoration(
-                      color: _buttonIndex == 1 ? Colors.indigo : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "complete",
-                        style: TextStyle(
-                          fontSize: _buttonIndex == 1 ? 16 : 14,
-                          fontWeight: FontWeight.w500,
-                          color: _buttonIndex == 1 ? Colors.white : Colors.black38,
+                  InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () {
+                      setState(() {
+                        _buttonIndex = 1;
+                      });
+                    },
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width/2.2,
+                      decoration: BoxDecoration(
+                        color: _buttonIndex == 1 ? Colors.indigo : Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "complete",
+                          style: TextStyle(
+                            fontSize: _buttonIndex == 1 ? 16 : 14,
+                            fontWeight: FontWeight.w500,
+                            color: _buttonIndex == 1 ? Colors.white : Colors.black38,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 30,),
-            _widgets[_buttonIndex],
-          ],
+                  )
+                ],
+              ),
+              SizedBox(height: 30,),
+              _widgets[_buttonIndex],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

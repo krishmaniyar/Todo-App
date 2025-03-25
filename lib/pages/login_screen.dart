@@ -34,125 +34,128 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFededeb),
       body: Container(
-        child: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/2),
-              padding: EdgeInsets.only(top: 45, left: 20, right: 20),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color.fromARGB(255, 53, 51, 51), Colors.black],
-                  begin: Alignment.topLeft,
-                  end: Alignment.topRight,
-                ),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.elliptical(MediaQuery.of(context).size.width, 110.0),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(left: 30, right: 30, top: 60),
-              child: SingleChildScrollView(
-                child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Center(
-                            child: Text(
-                              "${greet}",
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green, Colors.blue],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        height: MediaQuery.of(context).size.height,
+        child: Container(
+          margin: EdgeInsets.only(left: 30, right: 30, top: 60),
+          child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
+                      child: Center(
+                        child: Text(
+                          "${greet}",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 28.0,
+                            fontFamily: 'PlayFair',
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30,),
+                    Material(
+                      elevation: 3.0,
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        height: MediaQuery.of(context).size.height/2.2,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 30,),
+                            Text(
+                              isLogin ? "Login" : "Sign Up",
                               style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 24,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 30.0,
+                                fontFamily: 'PlayFair',
                               ),
                             ),
-                          ),
+                            SizedBox(height: 20,),
+                            SizedBox(height: 10),
+                            TextField(
+                              onChanged: (val) => email = val,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'PlayFair',
+                              ),
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Email',
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextField(
+                              onChanged: (val) => password = val,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: 'PlayFair',
+                              ),
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelText: 'Password',
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: authenticate,
+                              style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
+                              child: Text(isLogin ? 'Login' : 'Register',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'PlayFair',
+                                  )),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  isLogin = !isLogin;
+                                  greet = isLogin ? "Back to productivity! Log in and take control of your day." : "Stay organized, stay productive! Create your account now.";
+                                });
+                              },
+                              child: Text(
+                                isLogin ? 'Create an account' : 'Already have an account?',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'PlayFair',
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 30,),
-                        Material(
-                          elevation: 3.0,
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            height: MediaQuery.of(context).size.height/2.2,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 30,),
-                                Text(
-                                  isLogin ? "Login" : "Sign Up",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                SizedBox(height: 20,),
-                                SizedBox(height: 10),
-                                TextField(
-                                  onChanged: (val) => email = val,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    labelText: 'Email',
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                TextField(
-                                  onChanged: (val) => password = val,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    labelText: 'Password',
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                ElevatedButton(
-                                  onPressed: authenticate,
-                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
-                                  child: Text(isLogin ? 'Login' : 'Register',
-                                      style: TextStyle(color: Colors.black)),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      isLogin = !isLogin;
-                                      greet = isLogin ? "Back to productivity! Log in and take control of your day." : "Stay organized, stay productive! Create your account now.";
-                                    });
-                                  },
-                                  child: Text(
-                                    isLogin ? 'Create an account' : 'Already have an account?',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
                     )
-                ),
-              ),
+                  ],
+                )
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../model/todo_model.dart';
+import 'todo_model.dart';
 
 class DatabaseService {
   final CollectionReference todoCollection = FirebaseFirestore.instance.collection('todos');
